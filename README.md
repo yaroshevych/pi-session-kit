@@ -1,4 +1,4 @@
-# pi-session-manager
+# pi-session-kit
 
 Pi extension for managing session storage:
 
@@ -9,16 +9,22 @@ Pi extension for managing session storage:
 ## Install
 
 ```bash
-pi install npm:pi-session-manager
+pi install git:github.com/yaroshevych/pi-session-kit
 ```
 
-For local development:
+Once published to npm, it can also be installed with:
+
+```bash
+pi install npm:pi-session-kit
+```
+
+To load the extension from a local checkout for one run:
 
 ```bash
 pi -e ./session-manager.ts
 ```
 
-After installation, run `/reload` and then:
+Open the session manager with:
 
 ```text
 /session-manager
