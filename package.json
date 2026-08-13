@@ -1,0 +1,31 @@
+{
+  "name": "pi-session-manager",
+  "version": "0.1.0",
+  "description": "Pi extension for archiving, restoring, and importing coding-agent sessions",
+  "license": "MIT",
+  "keywords": [
+    "pi-package",
+    "pi",
+    "pi-coding-agent",
+    "pi-extension",
+    "sessions",
+    "archive",
+    "codex",
+    "claude"
+  ],
+  "files": [
+    "session-manager.ts",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": ">=0.84.0",
+    "@earendil-works/pi-tui": ">=0.84.0"
+  },
+  "pi": {
+    "extensions": [
+      "./session-manager.ts"
+    ]
+  }
+}
