@@ -1,6 +1,6 @@
 {
   "name": "pi-session-kit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Pi extension for archiving, restoring, and importing coding-agent sessions",
   "license": "MIT",
   "keywords": [
@@ -14,7 +14,7 @@
     "claude"
   ],
   "files": [
-    "session-manager.ts",
+    "session-kit.ts",
     "README.md",
     "LICENSE",
     "package.json"
@@ -25,7 +25,7 @@
   },
   "pi": {
     "extensions": [
-      "./session-manager.ts"
+      "./session-kit.ts"
     ]
   }
 }

@@ -7,7 +7,7 @@ import { homedir } from "node:os";
 import { join, basename } from "node:path";
 
 const SESSION_DIR = join(homedir(), ".pi", "agent", "sessions");
-const CONFIG_FILE = join(homedir(), ".pi", "agent", "session-manager.json");
+const CONFIG_FILE = join(homedir(), ".pi", "agent", "session-kit.json");
 const DEFAULT_ARCHIVE_AGE_DAYS = 7;
 const STARTUP_ARCHIVE_DELAY_MS = 1000;
 
@@ -186,7 +186,7 @@ async function importExternalSessions(
       const destination = await convertExternalSession(file, sourceType);
       if (destination) imported.push(destination);
     } catch (error) {
-      console.warn(`[session-manager] import failed: ${error instanceof Error ? error.message : String(error)}`);
+      console.warn(`[session-kit] import failed: ${error instanceof Error ? error.message : String(error)}`);
     }
     onProgress?.(index + 1, files.length);
   }
@@ -211,7 +211,7 @@ async function unpackSessions(sessionDir: string, onProgress?: (completed: numbe
         // unzip -n leaves an existing target untouched.
         try { await fs.access(target); unpacked++; } catch { /* no session in archive */ }
       } catch (error) {
-        console.warn(`[session-manager] unpack failed: ${error instanceof Error ? error.message : String(error)}`);
+        console.warn(`[session-kit] unpack failed: ${error instanceof Error ? error.message : String(error)}`);
       }
     }
     onProgress?.(index + 1, archives.length);
@@ -275,7 +275,7 @@ async function archiveOldSessions(
       await fs.unlink(file);
       archived++;
     } catch (error) {
-      console.warn(`[session-manager] archive failed: ${error instanceof Error ? error.message : String(error)}`);
+      console.warn(`[session-kit] archive failed: ${error instanceof Error ? error.message : String(error)}`);
     }
     onProgress?.(index + 1, files.length);
   }
@@ -283,7 +283,7 @@ async function archiveOldSessions(
   return { archived, cancelled: false };
 }
 
-export default function sessionManagerExtension(pi: ExtensionAPI) {
+export default function sessionKitExtension(pi: ExtensionAPI) {
   let config: Config = { ...defaultConfig };
 
   async function selectMenu(
@@ -366,7 +366,7 @@ export default function sessionManagerExtension(pi: ExtensionAPI) {
       config.lastArchiveAt = Date.now();
       await writeConfig(config);
     })().catch((error) => {
-      console.warn(`[session-manager] startup archive failed: ${error instanceof Error ? error.message : String(error)}`);
+      console.warn(`[session-kit] startup archive failed: ${error instanceof Error ? error.message : String(error)}`);
     });
   });
 
@@ -378,7 +378,7 @@ export default function sessionManagerExtension(pi: ExtensionAPI) {
   async function showSettings(ctx: ExtensionCommandContext): Promise<void> {
     while (true) {
       config = await readConfig();
-      const choice = await selectMenu(ctx, "Session manager · Settings", [
+      const choice = await selectMenu(ctx, "Session kit · Settings", [
         { value: "auto-zip", label: `Archive sessions automatically: ${config.autoArchive ? "ON" : "OFF"}` },
         { value: "zip-age", label: `Session age threshold: ${config.archiveAgeDays} day${config.archiveAgeDays === 1 ? "" : "s"}`, description: "Never archive sessions below this age (automatic or manual)" },
         { value: "Back", label: "Back" },
@@ -433,7 +433,7 @@ export default function sessionManagerExtension(pi: ExtensionAPI) {
 async function showImportMenu(ctx: ExtensionCommandContext): Promise<void> {
     const claudeCount = (await findSessionFiles(join(homedir(), ".claude", "projects"))).length;
     const codexCount = (await findSessionFiles(join(homedir(), ".codex", "sessions"))).length;
-    const choice = await selectMenu(ctx, "Session manager · Import sessions", [
+    const choice = await selectMenu(ctx, "Session kit · Import sessions", [
       { value: "claude", label: `Import Claude sessions (${claudeCount})` },
       { value: "codex", label: `Import Codex sessions (${codexCount})` },
       { value: "Back", label: "Back" },
@@ -453,7 +453,7 @@ async function showImportMenu(ctx: ExtensionCommandContext): Promise<void> {
         ? (await fs.readdir(sessionDir, { withFileTypes: true }).catch(() => [])).filter((entry) => entry.isFile() && entry.name.endsWith(".jsonl.zip")).length
         : 0;
       const oldSessionCount = await countOldSessions(ctx.sessionManager.getSessionFile(), config.archiveAgeDays);
-      const choice = await selectMenu(ctx, "Session manager", [
+      const choice = await selectMenu(ctx, "Session kit", [
         { value: "settings", label: "Settings..." },
         { value: "import", label: "Import sessions..." },
         { value: "unzip", label: `Restore sessions (${archiveCount})`, description: "Make archived sessions available for /resume in the current project" },
@@ -485,7 +485,7 @@ async function showImportMenu(ctx: ExtensionCommandContext): Promise<void> {
     }
   }
 
-  pi.registerCommand("session-manager", {
+  pi.registerCommand("session-kit", {
     description: "Configure automatic archiving of old Pi sessions",
     handler: async (_args, ctx: ExtensionCommandContext) => {
       config = await readConfig();

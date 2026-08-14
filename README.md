@@ -9,31 +9,19 @@ Pi extension for managing session storage:
 ## Install
 
 ```bash
-pi install git:github.com/yaroshevych/pi-session-kit
-```
-
-Once published to npm, it can also be installed with:
-
-```bash
 pi install npm:pi-session-kit
 ```
 
-To load the extension from a local checkout for one run:
-
-```bash
-pi -e ./session-manager.ts
-```
-
-Open the session manager with:
+Open the session kit with:
 
 ```text
-/session-manager
+/session-kit
 ```
 
 ## Menu
 
 ```text
-Session manager
+Session kit
 ├── Settings...
 │   ├── Archive sessions automatically: OFF
 │   └── Session age threshold: 7 days
