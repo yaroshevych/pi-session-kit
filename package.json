@@ -1,8 +1,16 @@
 {
   "name": "pi-session-kit",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Pi extension for archiving, restoring, and importing coding-agent sessions",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yaroshevych/pi-session-kit.git"
+  },
+  "homepage": "https://github.com/yaroshevych/pi-session-kit#readme",
+  "bugs": {
+    "url": "https://github.com/yaroshevych/pi-session-kit/issues"
+  },
   "keywords": [
     "pi-package",
     "pi",
