@@ -392,7 +392,7 @@ export default function sessionKitExtension(pi: ExtensionAPI) {
       } else if (choice === "zip-age") {
         const value = await ctx.ui.input("Auto-zip threshold", "Enter 1–3650 days");
         if (value === undefined) continue;
-        const days = Number.parseInt(value.trim(), 10);
+        const days = value.trim() ? Number(value.trim()) : NaN;
         if (!Number.isInteger(days) || days < 1 || days > 3650) {
           ctx.ui.notify("Zip age must be a whole number from 1 to 3650.", "error");
           continue;
